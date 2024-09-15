@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '../contexts/AuthContext'
 import { login } from '../api/authService'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,17 +15,14 @@ export default function LoginForm() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const router = useRouter()
+  const { login } = useAuth()
 
   const handleSubmit = async (e) => {
-    console.log("Submitting....")
     e.preventDefault()
     setError('')
 
     try {
-      const data = await login(userName, password)
-      // Here you would typically store the token in localStorage or a secure cookie
-      localStorage.setItem('authData', JSON.stringify(data))
-      console.log('Login successful', data)
+      await login(userName, password)
       router.push('/') // Redirect to dashboard or home page
     } catch (err) {
       setError(err.message)

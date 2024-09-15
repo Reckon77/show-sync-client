@@ -18,4 +18,22 @@ export async function login(userName, password) {
   return response.json();
 }
 
+export async function register(userData) {
+    const response = await fetch(`${API_URL}/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+      credentials: 'include',
+    });
+  
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Registration failed');
+    }
+  
+    return response.json();
+  }
+
 // You can add more API calls here, like register, logout, etc.
