@@ -1,5 +1,13 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+export function getToken(){
+    const authData = JSON.parse(localStorage.getItem('authData') || '{}');
+    const jwtToken = authData.jwtToken;
 
+  if (!jwtToken) {
+    throw new Error('No authentication token found');
+  }
+  return jwtToken;
+}
 export async function login(userName, password) {
   console.log(userName, password, API_URL)
   const response = await fetch(`${API_URL}/auth/login`, {
